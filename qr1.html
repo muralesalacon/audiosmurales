@@ -1,12 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Audio QR</title>
+</head>
 <body>
+<h2>Reproducción Automática</h2>
 
-<h2>Test de audio</h2>
-
-<audio controls>
-  <source src="https://raw.githubusercontent.com/muralesalacon/audiosmurales/refs/heads/main/qr1/Audio.wav" type="audio/mpeg">
+<audio id="audio1" controls autoplay>
+  <source src="https://github.com/user-attachments/files/23745766/Audio1.wav" type="audio/mpeg">
 </audio>
+
+<audio id="audio2">
+  <source src="https://github.com/user-attachments/files/23745767/Opinion1.wav" type="audio/mpeg">
+</audio>
+
+<script>
+  const a1 = document.getElementById("audio1");
+  const a2 = document.getElementById("audio2");
+
+  a1.onended = () => {
+    a2.play();
+  };
+</script>
 
 </body>
 </html>
