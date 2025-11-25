@@ -17,29 +17,28 @@
         user-select: none;
     }
 
-    #overlay {
+    #start {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        font-size: 32px;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 32px;
+        text-align: center;
         background: white;
         color: black;
-        text-align: center;
-        padding: 20px;
         cursor: pointer;
-        z-index: 10;
+        z-index: 999;
     }
 </style>
 </head>
 
 <body>
 
-<div id="overlay">Toca para escuchar</div>
+<div id="start">Toca para escuchar</div>
 
 <audio id="player" playsinline></audio>
 
@@ -51,27 +50,20 @@ const playlist = [audio1, audio2];
 let index = 0;
 
 const player = document.getElementById("player");
-const overlay = document.getElementById("overlay");
+const start = document.getElementById("start");
 
-// cuando el usuario toca en cualquier lado
-const startPlayback = () => {
+start.addEventListener("click", () => {
 
-    overlay.style.display = "none";  // quitar pantalla de inicio
+    // esconder pantalla de inicio
+    start.style.display = "none";
 
-    // cargar primer audio
+    // cargar y reproducir el primer audio
     index = 0;
     player.src = playlist[index];
     player.play();
+});
 
-    // quitar oyentes (solo queremos un toque)
-    document.body.removeEventListener("touchstart", startPlayback);
-    document.body.removeEventListener("click", startPlayback);
-};
-
-document.body.addEventListener("touchstart", startPlayback);
-document.body.addEventListener("click", startPlayback);
-
-// reproducir los audios en secuencia
+// reproducir en secuencia
 player.addEventListener("ended", () => {
     index++;
     if (index < playlist.length) {
@@ -83,3 +75,4 @@ player.addEventListener("ended", () => {
 
 </body>
 </html>
+
