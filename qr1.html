@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<title>Audio QR1</title>
+<meta charset="UTF-8">
+<title>Autoplay Móvil</title>
 </head>
-<body>
-<audio id="audio1" controls autoplay>
-  <source src="https://github.com/muralesalacon/audiosmurales/releases/download/audios/Audio1.wav" type="audio/mpeg">
-</audio>
 
-<audio id="audio2">
-  <source src="https://github.com/muralesalacon/audiosmurales/releases/download/audios/Opinion1.wav" type="audio/mpeg">
+<body>
+
+<audio id="player" playsinline muted>
 </audio>
 
 <script>
-  const a1 = document.getElementById("audio1");
-  const a2 = document.getElementById("audio2");
+const audio1 = "https://muralesalacon.github.io/audiosmurales/audios/Audio1.wav";
+const audio2 = "https://muralesalacon.github.io/audiosmurales/audios/Opinion1.wav";
 
-  a1.onended = () => {
-    a2.play();
-  };
+const player = document.getElementById("player");
+const playlist = [audio1, audio2];
+let index = 0;
+
+// cargar primer audio en silencio
+player.src = playlist[index];
+player.play();
+
+// en cuanto el usuario toca la pantalla una vez, desbloqueamos el sonido
+function unlockSound() {
+    player.muted = false;
+    player.play();
+
+    // quitar el listener (solo se necesita una vez)
+    window.removeEventListener('touchstart', unlockSound);
+    window.removeEventListener('click', unlockSound);
+}
+
+window.addEventListener('touchstart', unlockSound);
+window.addEventListener('click', unlockSound);
+
+// reproducir los dos audios seguidos
+player.addEventListener("ended", () => {
+    index++;
+    if (index < playlist.length) {
+        player.src = playlist[index];
+        player.play();
+    }
+});
 </script>
 
 </body>
