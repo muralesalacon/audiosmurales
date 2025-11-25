@@ -2,40 +2,76 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Autoplay Móvil</title>
+<title>Toca para escuchar</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #ffffff;
+        font-family: Arial, sans-serif;
+        user-select: none;
+    }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32px;
+        background: white;
+        color: black;
+        text-align: center;
+        padding: 20px;
+        cursor: pointer;
+        z-index: 10;
+    }
+</style>
 </head>
 
 <body>
 
-<audio id="player" playsinline muted>
-</audio>
+<div id="overlay">Toca para escuchar</div>
+
+<audio id="player" playsinline></audio>
 
 <script>
 const audio1 = "https://muralesalacon.github.io/audiosmurales/audios/Audio1.wav";
 const audio2 = "https://muralesalacon.github.io/audiosmurales/audios/Opinion1.wav";
 
-const player = document.getElementById("player");
 const playlist = [audio1, audio2];
 let index = 0;
 
-// cargar primer audio en silencio
-player.src = playlist[index];
-player.play();
+const player = document.getElementById("player");
+const overlay = document.getElementById("overlay");
 
-// en cuanto el usuario toca la pantalla una vez, desbloqueamos el sonido
-function unlockSound() {
-    player.muted = false;
+// cuando el usuario toca en cualquier lado
+const startPlayback = () => {
+
+    overlay.style.display = "none";  // quitar pantalla de inicio
+
+    // cargar primer audio
+    index = 0;
+    player.src = playlist[index];
     player.play();
 
-    // quitar el listener (solo se necesita una vez)
-    window.removeEventListener('touchstart', unlockSound);
-    window.removeEventListener('click', unlockSound);
-}
+    // quitar oyentes (solo queremos un toque)
+    document.body.removeEventListener("touchstart", startPlayback);
+    document.body.removeEventListener("click", startPlayback);
+};
 
-window.addEventListener('touchstart', unlockSound);
-window.addEventListener('click', unlockSound);
+document.body.addEventListener("touchstart", startPlayback);
+document.body.addEventListener("click", startPlayback);
 
-// reproducir los dos audios seguidos
+// reproducir los audios en secuencia
 player.addEventListener("ended", () => {
     index++;
     if (index < playlist.length) {
