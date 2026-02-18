@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Toca para escuchar</title>
+<style>
+    body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    user-select: none;
+}
+
+#start {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* TAMAÑO DE TEXTO EXTRA GIGANTE */
+    font-size: 21vw; /* ocupa casi toda la pantalla */
+    font-weight: bold;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background: #000000; /* fondo negro para máximo contraste */
+    color: #ffffff;      /* texto blanco */
+    cursor: pointer;
+    z-index: 999;
+
+    padding: 5%;
+}
+
+#icon {
+    font-size: 40vw; /* ICONO ENORME */
+    line-height: 0.9;
+    margin-bottom: 4vw;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div id="start">
+    <div id="icon">▶️</div>
+    Toca para escuchar
+</div>
+
+
+<audio id="player" playsinline></audio>
+
+<script>
+const audio1 = "https://muralesalacon.github.io/audiosmurales/audiosmp3/Audio6.mp3";
+const audio2 = "https://muralesalacon.github.io/audiosmurales/audiosmp3/Opinion6.mp3";
+
+const playlist = [audio1, audio2];
+let index = 0;
+
+const player = document.getElementById("player");
+const start = document.getElementById("start");
+
+start.addEventListener("click", () => {
+
+    // esconder pantalla de inicio
+    start.style.display = "none";
+
+    // cargar y reproducir el primer audio
+    index = 0;
+    player.src = playlist[index];
+    player.play();
+});
+
+// reproducir en secuencia
+player.addEventListener("ended", () => {
+    index++;
+    if (index < playlist.length) {
+        player.src = playlist[index];
+        player.play();
+    }
+});
+</script>
+
+</body>
+</html>
